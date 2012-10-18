@@ -34,7 +34,7 @@ dirname, filename = os.path.split(os.path.abspath(__file__))
 
 APIKEY = '044338cd9ff00333'
 
-base_uri = "http://api.wunderground.com/api/"
+base_uri = "http://api.wunderground.com/api/044338cd9ff00333/"
 
 # define some stocks
 cities = [line.strip() for line in open(dirname + '/cities.txt').read().split('\n')]
@@ -61,7 +61,17 @@ columns = [u'UV',u'dewpoint_c',u'dewpoint_f',u'dewpoint_string',u'display_locati
 		   u'wind_degrees',u'wind_dir',u'wind_gust_kph',u'wind_gust_mph',u'wind_kph',u'wind_mph',u'wind_string',u'windchill_c',u'windchill_f',u'windchill_string']
 w.writerow(columns)
 
+for block in range(0, len(cities), 100):
+    cities_subset = cities[block:block+100]
+    # define the parameters
+    query = {
+#        "q":"select * from yahoo.finance.quotes where symbol in (%s)" % ', '.join(cities_subset),
+#        "env":"http://datatables.org/alltables.env",
+#        "format":"json"
+    }
 
+    url = base_uri
+    
 for city in cities:
 	url = 'http://api.wunderground.com/api/'+APIKEY+'/geolookup/conditions/q/'+city+'.json'
 	rsp = get_json(url)
