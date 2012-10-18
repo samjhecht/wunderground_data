@@ -32,9 +32,8 @@ def get_hour():
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
 
-APIKEY = '044338cd9ff00333'
-
-base_uri = "http://api.wunderground.com/api/044338cd9ff00333/"
+APIKEY = 'dj0yJmk9UEFtTHhwQXI5TWFWJmQ9WVdrOVNqQmlTRnBFTjJrbWNHbzlPVE00TmpBek5UWXkmcz1jb25zdW1lcnNlY3JldCZ4PTJk'
+SECRET = '3d885e5c1e509d7fcd226d01929d844d2917dacd'
 
 # define some stocks
 cities = [line.strip() for line in open(dirname + '/cities.txt').read().split('\n')]
@@ -65,13 +64,13 @@ for block in range(0, len(cities), 100):
     cities_subset = cities[block:block+100]
     # define the parameters
     query = {
-#        "q":"select * from yahoo.finance.quotes where symbol in (%s)" % ', '.join(cities_subset),
-#        "env":"http://datatables.org/alltables.env",
-#        "format":"json"
+        "q":"select * from wunderground.currentobservaton where location is (%s)" % ', '.join(cities_subset),
+        "env":"http://datatables.org/alltables.env",
+        "format":"json"
     }
 
     url = base_uri
-    
+
 for city in cities:
 	url = 'http://api.wunderground.com/api/'+APIKEY+'/geolookup/conditions/q/'+city+'.json'
 	rsp = get_json(url)
@@ -86,13 +85,7 @@ for city in cities:
 		pp.pprint(stat)
 		w.writerow([stat.get(col) for col in columns])
 
-	#u = urllib2.urlopen(query)
-	#json_string = u.read()
-	#parsed_json = json.loads(json_string)
-	#location = parsed_json['location']['city']
-	#temp_f = parsed_json['current_observation']['temp_f']
-	#print "Current temperature in %s is: %s" % (location, temp_f)
-	#u.close()
+
 
 
 
